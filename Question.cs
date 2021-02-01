@@ -4,23 +4,32 @@ namespace CreateQuestionaireAppBlazor
 {
     public class Question
     {
-        public string question { get; set; }
-        public List<string> answers { get; set; }
+        public string question, answer;
 
-        public Question(string question, List<string> answers)
-        {
-            this.question = question;
-            this.answers = answers;
+        List<string> questionAnswer;
+
+        public void setQuestion(string q) {
+            this.question = q;
         }
+        public void setAnswer(string a) {
+            this.answer = a;
+        }
+
+        public string getQuestionAnswer(int Index) {
+
+            return questionAnswer[Index];
+        }
+
         public Question()
         {
             this.question = null;
-            this.answers = null;
+            this.answer = null;
+            this.questionAnswer = new List<string>(); 
         }
-        public void addAnswerToList(string value)
+        public void addQuestion()
         {
-            this.answers.Add(value);
-
+            this.questionAnswer.Add(question);
+            this.questionAnswer.Add(answer);
         }
 
     }
