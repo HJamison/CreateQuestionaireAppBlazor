@@ -6,7 +6,7 @@ namespace CreateQuestionaireAppBlazor
     {
         public string question, answer;
 
-        List<string> questionAnswer;
+        public List<string> questionAnswer;
 
         public void setQuestion(string q) {
             this.question = q;

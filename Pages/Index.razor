@@ -1,5 +1,7 @@
 ﻿
 @page "/"
+@using System.ComponentModel.DataAnnotations
+
 @code{public Question newQuestion = new Question();}
 
 <h1>Create a questionaire</h1>
@@ -17,20 +19,18 @@ Welcome to the questionaire builder.
 
 </form>
 <button @onclick="UpdateQuestion" class="btn btn-primary">Add</button>
+       
 
 
 <h1>@stringQuestion</h1>
 <h1>@stringAnswer</h1>
 
-<h3>@test</h3>
-<h3>@test2</h3>
-
 @code{
 
     string stringQuestion = "";
     string stringAnswer = "";
-    string test = "";
-    string test2 = "";
+    //string test = "";
+    //string test2 = "";
 
     private void SetQuestion(string Value)
     {
@@ -48,15 +48,25 @@ Welcome to the questionaire builder.
         newQuestion.setQuestion(stringQuestion);
         newQuestion.setAnswer(stringAnswer);
         newQuestion.addQuestion();
-        test = newQuestion.getQuestionAnswer(0);
-        test2 = newQuestion.getQuestionAnswer(1);
+        //test = newQuestion.getQuestionAnswer(0);
+        //test2 = newQuestion.getQuestionAnswer(1);
 
     }
-
-
-
-
 }
+
+<form>
+    @for (var i = 0; i < newQuestion.questionAnswer.Count(); i = i + 2)
+    {
+        var question = newQuestion.questionAnswer[i];
+        <div class="form-group" style="border-style:dotted">
+                <label id="@i">@question</label><br>
+
+                <input type="text" value="@newQuestion.questionAnswer[i+1]"><br><br>
+
+                <button class="btn btn-primary" disabled>Submit</button>
+        </div>
+    }
+</form>
 
 
 
