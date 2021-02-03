@@ -4,10 +4,12 @@
 
 @code{public Question newQuestion = new Question();}
 
+@code{public Question newRadioQuestion = new Question();}
+
 <h1>Create a questionaire</h1>
 
 Welcome to the questionaire builder.
-<form>
+<form action='PreviewForm.razor' method='post'>
     <div class="form-group">
         <b><label for="exampleFormControlInput1">Question</label></b>
         <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter your question here" value="@stringQuestion" @oninput="(EventArgs) => {SetQuestion(EventArgs.Value.ToString());}">
@@ -16,10 +18,33 @@ Welcome to the questionaire builder.
         <b><label for="exampleFormControlInput1">Answer</label></b>
         <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your answer here" value="@stringAnswer" @oninput="(EventArgs) => {SetAnswer(EventArgs.Value.ToString());}">
     </div>
-
 </form>
-<button @onclick="UpdateQuestion" class="btn btn-primary">Add</button>
-       
+
+<form action='PreviewForm.razor' method='post'>
+    <div class="form-group">
+        <b><label for="exampleFormControlInput1">Multiple-Choice Question</label></b>
+        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter your multiple-choice question here" value="@stringRadioQuestion" @oninput="(EventArgs) => {SetRadioQuestion(EventArgs.Value.ToString());}">
+    </div>
+    <div class="form-group">
+        <b><label for="exampleFormControlInput1">Answer 1</label></b>
+        <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your first choice here" value="@stringRadioAnswer1" @oninput="(EventArgs) => {SetRadioAnswer1(EventArgs.Value.ToString());}">
+    </div>
+    <div class="form-group">
+        <b><label for="exampleFormControlInput1">Answer 2</label></b>
+        <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your second choice here" value="@stringRadioAnswer2" @oninput="(EventArgs) => {SetRadioAnswer2(EventArgs.Value.ToString());}">
+    </div>
+    <div class="form-group">
+        <b><label for="exampleFormControlInput1">Answer 3</label></b>
+        <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your third choice here" value="@stringRadioAnswer3" @oninput="(EventArgs) => {SetRadioAnswer3(EventArgs.Value.ToString());}">
+    </div>
+    <div class="form-group">
+        <b><label for="exampleFormControlInput1">Answer 4</label></b>
+        <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your fourth choice here" value="@stringRadioAnswer4" @oninput="(EventArgs) => {SetRadioAnswer4(EventArgs.Value.ToString());}">
+    </div>
+</form>
+
+<button @onclick="UpdateQuestion" class="btn btn-primary">Add Text Question</button>
+<button @onclick="UpdateRadioQuestion" class="btn btn-primary">Add Multiple Choice Question</button>
 
 
 <h1>@stringQuestion</h1>
@@ -29,8 +54,12 @@ Welcome to the questionaire builder.
 
     string stringQuestion = "";
     string stringAnswer = "";
-    //string test = "";
-    //string test2 = "";
+
+    string stringRadioQuestion = "";
+    string stringRadioAnswer1 = "";
+    string stringRadioAnswer2 = "";
+    string stringRadioAnswer3 = "";
+    string stringRadioAnswer4 = "";
 
     private void SetQuestion(string Value)
     {
@@ -42,15 +71,47 @@ Welcome to the questionaire builder.
         stringAnswer = Value;
     }
 
+    private void SetRadioQuestion(string Value)
+    {
+        stringRadioQuestion = Value;
+    }
+
+    private void SetRadioAnswer1(string Value)
+    {
+        stringRadioAnswer1 = Value;
+    }
+
+    private void SetRadioAnswer2(string Value)
+    {
+        stringRadioAnswer2 = Value;
+    }
+
+    private void SetRadioAnswer3(string Value)
+    {
+        stringRadioAnswer3 = Value;
+    }
+
+    private void SetRadioAnswer4(string Value)
+    {
+        stringRadioAnswer4 = Value;
+    }
 
     private void UpdateQuestion(MouseEventArgs e)
     {
         newQuestion.setQuestion(stringQuestion);
         newQuestion.setAnswer(stringAnswer);
         newQuestion.addQuestion();
-        //test = newQuestion.getQuestionAnswer(0);
-        //test2 = newQuestion.getQuestionAnswer(1);
 
+    }
+
+    private void UpdateRadioQuestion(MouseEventArgs e)
+    {
+        newRadioQuestion.setRadioQuestion(stringRadioQuestion);
+        newRadioQuestion.setRadioAnswer1(stringRadioAnswer1);
+        newRadioQuestion.setRadioAnswer2(stringRadioAnswer2);
+        newRadioQuestion.setRadioAnswer3(stringRadioAnswer3);
+        newRadioQuestion.setRadioAnswer4(stringRadioAnswer4);
+        newRadioQuestion.addRadioQuestion();
     }
 }
 
@@ -59,12 +120,29 @@ Welcome to the questionaire builder.
     {
         var question = newQuestion.questionAnswer[i];
         <div class="form-group" style="border-style:dotted">
-                <label id="@i">@question</label><br>
+            <label id="@i">@question</label><br>
 
-                <input type="text" value="@newQuestion.questionAnswer[i+1]"><br><br>
+            <input type="text" value="@newQuestion.questionAnswer[i+1]"><br><br>
 
-                <button class="btn btn-primary" disabled>Submit</button>
+            <button class="btn btn-primary" disabled>Submit</button>
         </div>
+    }
+</form>
+
+<form>
+    @for (var y = 0; y < newRadioQuestion.radioQuestionAnswer.Count(); y = y + 5)
+    {
+        var radioquestion = newRadioQuestion.radioQuestionAnswer[y];
+    <div class="form-group" style="border-style:dotted">
+        <label>@radioquestion</label><br>
+
+        <input type="radio" name="radioQuestion" value="@newRadioQuestion.radioQuestionAnswer[y+1]">@newRadioQuestion.radioQuestionAnswer[y+1]<br>
+        <input type="radio" name="radioQuestion" value="@newRadioQuestion.radioQuestionAnswer[y+2]">@newRadioQuestion.radioQuestionAnswer[y+2]<br>
+        <input type="radio" name="radioQuestion" value="@newRadioQuestion.radioQuestionAnswer[y+3]">@newRadioQuestion.radioQuestionAnswer[y+3]<br>
+        <input type="radio" name="radioQuestion" value="@newRadioQuestion.radioQuestionAnswer[y+4]">@newRadioQuestion.radioQuestionAnswer[y+4]<br>
+
+        <button class="btn btn-primary" disabled>Submit</button>
+    </div>
     }
 </form>
 
