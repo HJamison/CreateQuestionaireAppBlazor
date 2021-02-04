@@ -57,15 +57,33 @@ Welcome to the questionaire builder.
 
     }
 
-
     public void UpdateQuestion(MouseEventArgs e)
     {
+        bool questionExists = false;
 
-        newQuestionaire.questions.Add(new Question(stringQuestion));
 
+        //--- CHECKS IF QUESTION ALREADY EXISTS ---
+        //#TODO add an error box for when the question already exists (something like this? : https://docs.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors?view=aspnetcore-5.0)
+        if (newQuestionaire.questions != null)
+        {
+            for (int i = 0; i < newQuestionaire.questions.Count(); i++)
+            {
+                string currentQuestionTemp = newQuestionaire.questions[i].questionText;
+                if (currentQuestionTemp == stringQuestion)
+                {
+                    questionExists = true;
+                }
+
+            }
+            if (questionExists == false)
+            {
+                newQuestionaire.questions.Add(new Question(stringQuestion));
+            }
+            else
+            {
+            }
+        }
     }
-
-
 
 }
 
