@@ -38,6 +38,7 @@ Welcome to the questionaire builder.
     <h1>Questionaire name :@newQuestionaire.questionaireName</h1>
     <form>
         <div class="form-group">
+            <b><label for="exampleFormControlInput1">@duplicateQuestionError</label></b>
             <b><label for="exampleFormControlInput1">Question</label></b>
             <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter your question here" value="@stringQuestion" @oninput="(EventArgs) => { SetQuestion(EventArgs.Value.ToString()); }">
         </div>
@@ -59,11 +60,11 @@ Welcome to the questionaire builder.
     public void UpdateQuestion(MouseEventArgs e)
     {
         bool questionExists = false;
-
+        removeQuestionErrorMessage();
 
         //--- CHECKS IF QUESTION ALREADY EXISTS ---
         //#TODO add an error box for when the question already exists (something like this? : https://docs.microsoft.com/en-us/aspnet/core/blazor/fundamentals/handle-errors?view=aspnetcore-5.0)
-        if (newQuestionaire.questions != null)
+            if (newQuestionaire.questions != null)
         {
             for (int i = 0; i < newQuestionaire.questions.Count(); i++)
             {
@@ -80,7 +81,7 @@ Welcome to the questionaire builder.
             }
             else
             {
-
+                errorQuestionMessage();
             }
         }
     }
@@ -98,7 +99,7 @@ Welcome to the questionaire builder.
             @{ var tmpQ = tmp;
                 int indexQ = newQuestionaire.questions.IndexOf(tmpQ);}
         <div class="form-group">
-            <b><label for="exampleFormControlInput1">@duplicateError</label></b>
+            <b><label for="exampleFormControlInput1">@duplicateAnswerError</label></b>
             <b><label for="exampleFormControlInput1">Answer</label></b>
             <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your answer here" value="@stringAnswer" @oninput="(EventArgs) => { SetAnswer(EventArgs.Value.ToString()); }">
             <small id="answerHelp" class="form-text text-muted">Enter your answer here:)</small>
@@ -106,7 +107,7 @@ Welcome to the questionaire builder.
                                                 // --- CHECKS IF ANSWER ALREADY EXISTS ---
                                                 //#TODO add an error box for when the question already exists
                                                 if (tmp.questionAnswer != null ) {
-                                                    removeErrorMessage();
+                                                    removeAnswerErrorMessage();
                                                     bool answerExists = false;
                                                     for (int i = 0; i < tmp.questionAnswer.Count() ; i++)
                                                     {
@@ -122,7 +123,7 @@ Welcome to the questionaire builder.
                                                         tmp.questionAnswer.Add(new Answers(stringAnswer, false));
                                                     }
                                                     else {
-                                                        errorMessage();
+                                                        errorAnswerMessage();
                                                     }
 
                                                 }
@@ -134,16 +135,27 @@ Welcome to the questionaire builder.
         </div>
             @code
             {
-                string duplicateError = "";
+                string duplicateQuestionError = "";
+                string duplicateAnswerError = "";
 
-                public void errorMessage()
+                public void errorAnswerMessage()
                 {
-                    duplicateError = "Duplicate Answer, please review";
+                    duplicateAnswerError = "Duplicate Answer, please change";
                 }
 
-                public void removeErrorMessage()
+                public void errorQuestionMessage()
                 {
-                    duplicateError = "";
+                    duplicateQuestionError = "Duplicate Question, please change";
+                }
+
+                public void removeQuestionErrorMessage()
+                {
+                    duplicateQuestionError = "";
+                }
+
+                public void removeAnswerErrorMessage()
+                {
+                    duplicateAnswerError = "";
                 }
 
                 string stringAnswer = "";
