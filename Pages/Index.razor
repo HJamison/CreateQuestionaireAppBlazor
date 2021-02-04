@@ -11,26 +11,52 @@
 <h1>Create a questionaire</h1>
 
 Welcome to the questionaire builder.
-<form>
-    <div class="form-group">
-        <b><label for="exampleFormControlInput1">Question</label></b>
-        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter your question here" value="@stringQuestion" @oninput="(EventArgs) => { SetQuestion(EventArgs.Value.ToString()); }">
-    </div>
-    <button type="button" @onclick="UpdateQuestion" class="btn btn-primary">Add</button>
+@if (newQuestionaire.questionaireName == null)
+{
+    <form>
+        <div class="form-group">
+            <b><label for="exampleFormControlInput1">Questionaire Name</label></b>
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter the name of the questionaire here" value="@questionaireName" @oninput="(EventArgs) => { SetQuestionaireName(EventArgs.Value.ToString()); }">
+        </div>
+        <button type="button" @onclick="(EventArgs) => { newQuestionaire.questionaireName = questionaireName; }" class="btn btn-primary">Add</button>
 
 
-</form>
+    </form>
+}
+@code
+{
+    string questionaireName = " ";
+    public void SetQuestionaireName(string Value)
+    {
+        questionaireName = Value;
 
+    }
+
+}
+@if (newQuestionaire.questionaireName != null)
+{
+    <h1>@newQuestionaire.questionaireName</h1>
+    <form>
+        <div class="form-group">
+            <b><label for="exampleFormControlInput1">Question</label></b>
+            <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Enter your question here" value="@stringQuestion" @oninput="(EventArgs) => { SetQuestion(EventArgs.Value.ToString()); }">
+        </div>
+        <button type="button" @onclick="UpdateQuestion" class="btn btn-primary">Add</button>
+
+
+    </form>
+}
 @code{
 
 
     string stringQuestion = " ";
-    
+
     public void SetQuestion(string Value)
     {
         stringQuestion = Value;
 
     }
+
 
     public void UpdateQuestion(MouseEventArgs e)
     {
@@ -38,7 +64,7 @@ Welcome to the questionaire builder.
         newQuestionaire.questions.Add(new Question(stringQuestion));
 
     }
-  
+
 
 
 }
@@ -48,42 +74,42 @@ Welcome to the questionaire builder.
 {
     @foreach (Question tmp in newQuestionaire.questions)
     {
-        
-<form>
-    <h1> @tmp.questionText</h1>
-    @{ var tmpQ = tmp;
-        int indexQ = newQuestionaire.questions.IndexOf(tmpQ);}
-<div class="form-group">
-    <b><label for="exampleFormControlInput1">Answer</label></b>
-    <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your answer here" value="@stringAnswer" @oninput="(EventArgs) => { SetAnswer(EventArgs.Value.ToString()); }">
-    <small id="answerHelp" class="form-text text-muted">Enter your answer here:)</small>
-    <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.Add(new Answers(stringAnswer,false)); }" class="btn btn-primary">Add</button>
-    <button type="button" @onclick="(EventArgs) => { newQuestionaire.questions.RemoveAt(indexQ); }" class="btn btn-primary">remove</button>
-</div>
-    @code
-            {
-        string stringAnswer = " ";
 
-        private void SetAnswer(string Value)
-        {
-            stringAnswer = Value;
-        }
-
-    }
-
-    @foreach (Answers tmpAns in tmp.questionAnswer)
-    {
-        <div class="card w-75">
-
-            @{ var ansTxt = tmpAns;
-                int index = tmp.questionAnswer.IndexOf(ansTxt);}
-            <div class="card-body">
-                <p class="card-text">@tmpAns.AnswerText</p>
-                <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.RemoveAt(index ); }" class="btn btn-primary">remove</button>
+        <form>
+            <h1> @tmp.questionText</h1>
+            @{ var tmpQ = tmp;
+                int indexQ = newQuestionaire.questions.IndexOf(tmpQ);}
+            <div class="form-group">
+                <b><label for="exampleFormControlInput1">Answer</label></b>
+                <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your answer here" value="@stringAnswer" @oninput="(EventArgs) => { SetAnswer(EventArgs.Value.ToString()); }">
+                <small id="answerHelp" class="form-text text-muted">Enter your answer here:)</small>
+                <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.Add(new Answers(stringAnswer,false)); }" class="btn btn-primary">Add</button>
+                <button type="button" @onclick="(EventArgs) => { newQuestionaire.questions.RemoveAt(indexQ); }" class="btn btn-primary">remove</button>
             </div>
-        </div>
-    }
-</form>
+            @code
+            {
+                string stringAnswer = " ";
+
+                private void SetAnswer(string Value)
+                {
+                    stringAnswer = Value;
+                }
+
+            }
+
+            @foreach (Answers tmpAns in tmp.questionAnswer)
+            {
+                <div class="card w-75">
+
+                    @{ var ansTxt = tmpAns;
+                        int index = tmp.questionAnswer.IndexOf(ansTxt);}
+                    <div class="card-body">
+                        <p class="card-text">@tmpAns.AnswerText</p>
+                        <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.RemoveAt(index ); }" class="btn btn-primary">remove</button>
+                    </div>
+                </div>
+            }
+        </form>
 
     }
 }
