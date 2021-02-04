@@ -75,7 +75,7 @@ Welcome to the questionaire builder.
                 }
 
             }
-            if (questionExists == false)
+            if (questionExists == false && !String.IsNullOrEmpty(stringQuestion))
             {
                 newQuestionaire.questions.Add(new Question(stringQuestion));
             }
@@ -101,7 +101,33 @@ Welcome to the questionaire builder.
                 <b><label for="exampleFormControlInput1">Answer</label></b>
                 <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your answer here" value="@stringAnswer" @oninput="(EventArgs) => { SetAnswer(EventArgs.Value.ToString()); }">
                 <small id="answerHelp" class="form-text text-muted">Enter your answer here:)</small>
-                <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.Add(new Answers(stringAnswer, false)); }" class="btn btn-primary">Add</button>
+                <button type="button" @onclick="(EventArgs) => { 
+                                                    
+                                                    // --- CHECKS IF ANSWER ALREADY EXISTS ---
+                                                    //#TODO add an error box for when the question already exists
+                                                    if (tmp.questionAnswer != null ) {
+                                                        bool answerExists = false;
+                                                        for (int i = 0; i < tmp.questionAnswer.Count() ; i++)
+                                                        {
+                                                            string currentAnswerTemp = tmp.questionAnswer[i].AnswerText;
+                                                            if (currentAnswerTemp == stringAnswer)
+                                                            {
+                                                                answerExists = true;
+                                                            }
+
+                                                        }
+                                                        if (answerExists == false && !String.IsNullOrEmpty(stringAnswer))
+                                                        {
+                                                            tmp.questionAnswer.Add(new Answers(stringAnswer, false));
+                                                        }
+                                                        else { 
+                                                            // add an error message
+                                                        
+                                                        }
+
+                                                    }
+                                                
+                                                }" class="btn btn-primary">Add</button>
                 <button type="button" @onclick="(EventArgs) => { newQuestionaire.questions.RemoveAt(indexQ); }" class="btn btn-primary">remove</button>
             </div>
             @code
