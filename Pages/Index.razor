@@ -48,7 +48,6 @@ Welcome to the questionaire builder.
 }
 @code{
 
-
     string stringQuestion = "";
 
     public void SetQuestion(string Value)
@@ -97,42 +96,55 @@ Welcome to the questionaire builder.
             <h1> @tmp.questionText</h1>
             @{ var tmpQ = tmp;
                 int indexQ = newQuestionaire.questions.IndexOf(tmpQ);}
-            <div class="form-group">
-                <b><label for="exampleFormControlInput1">Answer</label></b>
-                <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your answer here" value="@stringAnswer" @oninput="(EventArgs) => { SetAnswer(EventArgs.Value.ToString()); }">
-                <small id="answerHelp" class="form-text text-muted">Enter your answer here:)</small>
-                <button type="button" @onclick="(EventArgs) => { 
-                                                    
-                                                    // --- CHECKS IF ANSWER ALREADY EXISTS ---
-                                                    //#TODO add an error box for when the question already exists
-                                                    if (tmp.questionAnswer != null ) {
-                                                        bool answerExists = false;
-                                                        for (int i = 0; i < tmp.questionAnswer.Count() ; i++)
+        <div class="form-group">
+            <b><label for="exampleFormControlInput1">@duplicateError</label></b>
+            <b><label for="exampleFormControlInput1">Answer</label></b>
+            <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your answer here" value="@stringAnswer" @oninput="(EventArgs) => { SetAnswer(EventArgs.Value.ToString()); }">
+            <small id="answerHelp" class="form-text text-muted">Enter your answer here:)</small>
+            <button type="button" @onclick="(EventArgs) => {
+                                                // --- CHECKS IF ANSWER ALREADY EXISTS ---
+                                                //#TODO add an error box for when the question already exists
+                                                if (tmp.questionAnswer != null ) {
+                                                    removeErrorMessage();
+                                                    bool answerExists = false;
+                                                    for (int i = 0; i < tmp.questionAnswer.Count() ; i++)
+                                                    {
+                                                        string currentAnswerTemp = tmp.questionAnswer[i].AnswerText;
+                                                        if (currentAnswerTemp == stringAnswer)
                                                         {
-                                                            string currentAnswerTemp = tmp.questionAnswer[i].AnswerText;
-                                                            if (currentAnswerTemp == stringAnswer)
-                                                            {
-                                                                answerExists = true;
-                                                            }
-
-                                                        }
-                                                        if (answerExists == false && !String.IsNullOrEmpty(stringAnswer))
-                                                        {
-                                                            tmp.questionAnswer.Add(new Answers(stringAnswer, false));
-                                                        }
-                                                        else { 
-                                                            // add an error message
-                                                        
+                                                            answerExists = true;
                                                         }
 
                                                     }
-                                                
-                                                }" class="btn btn-primary">Add</button>
-                <button type="button" @onclick="(EventArgs) => { newQuestionaire.questions.RemoveAt(indexQ); }" class="btn btn-primary">remove</button>
-            </div>
+                                                    if (answerExists == false && !String.IsNullOrEmpty(stringAnswer))
+                                                    {
+                                                        tmp.questionAnswer.Add(new Answers(stringAnswer, false));
+                                                    }
+                                                    else {
+                                                        errorMessage();
+                                                    }
+
+                                                }
+
+                                            }" class="btn btn-primary">
+                Add
+            </button>
+            <button type="button" @onclick="(EventArgs) => { newQuestionaire.questions.RemoveAt(indexQ); }" class="btn btn-primary">remove</button>
+        </div>
             @code
             {
-                
+                string duplicateError = "";
+
+                public void errorMessage()
+                {
+                    duplicateError = "Duplicate Answer, please review";
+                }
+
+                public void removeErrorMessage()
+                {
+                    duplicateError = "";
+                }
+
                 string stringAnswer = "";
 
                 private void SetAnswer(string Value)
