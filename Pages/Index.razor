@@ -35,7 +35,7 @@ Welcome to the questionaire builder.
 }
 @if (newQuestionaire.questionaireName != null)
 {
-    <h1>@newQuestionaire.questionaireName</h1>
+    <h1>Questionaire name :@newQuestionaire.questionaireName</h1>
     <form>
         <div class="form-group">
             <b><label for="exampleFormControlInput1">Question</label></b>
@@ -101,11 +101,12 @@ Welcome to the questionaire builder.
                 <b><label for="exampleFormControlInput1">Answer</label></b>
                 <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your answer here" value="@stringAnswer" @oninput="(EventArgs) => { SetAnswer(EventArgs.Value.ToString()); }">
                 <small id="answerHelp" class="form-text text-muted">Enter your answer here:)</small>
-                <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.Add(new Answers(stringAnswer,false)); }" class="btn btn-primary">Add</button>
+                <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.Add(new Answers(stringAnswer, false)); }" class="btn btn-primary">Add</button>
                 <button type="button" @onclick="(EventArgs) => { newQuestionaire.questions.RemoveAt(indexQ); }" class="btn btn-primary">remove</button>
             </div>
             @code
             {
+                
                 string stringAnswer = " ";
 
                 private void SetAnswer(string Value)
@@ -114,7 +115,6 @@ Welcome to the questionaire builder.
                 }
 
             }
-
             @foreach (Answers tmpAns in tmp.questionAnswer)
             {
                 <div class="card w-75">
@@ -123,6 +123,19 @@ Welcome to the questionaire builder.
                         int index = tmp.questionAnswer.IndexOf(ansTxt);}
                     <div class="card-body">
                         <p class="card-text">@tmpAns.AnswerText</p>
+                        <div class="form-check">
+                            <input class="form-check-input" @bind="checkedValue" type="checkbox" id="flexCheckDefault">
+                            @code
+                            {
+                                bool checkedValue = true;
+
+                            }
+                            @{tmp.questionAnswer[index].Correct = checkedValue;
+                            }
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Answer correct?
+                            </label>
+                        </div>
                         <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.RemoveAt(index ); }" class="btn btn-primary">remove</button>
                     </div>
                 </div>
