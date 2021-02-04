@@ -8,7 +8,7 @@ namespace CreateQuestionaireAppBlazor
     public class Answers
     {
         public string AnswerText { get; set; }
-        public   bool Correct { get; set; }
+        public bool Correct { get; set; }
         public Answers(string answerText, bool correct)
         {
             AnswerText = answerText;

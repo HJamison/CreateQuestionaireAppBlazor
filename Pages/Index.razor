@@ -146,23 +146,20 @@ Welcome to the questionaire builder.
                 <div class="card w-75">
 
                     @{ var ansTxt = tmpAns;
-                        int index = tmp.questionAnswer.IndexOf(ansTxt);}
+                        int index = tmp.questionAnswer.IndexOf(ansTxt);
+                        bool checkedValue = false;
+                     }
+
                     <div class="card-body">
                         <p class="card-text">@tmpAns.AnswerText</p>
                         <div class="form-check">
                             <input class="form-check-input" @bind="checkedValue" type="checkbox" id="flexCheckDefault">
-                            @code
-                            {
-                                bool checkedValue = true;
-
-                            }
-                            @{tmp.questionAnswer[index].Correct = checkedValue;
-                            }
+                            @{ tmp.questionAnswer[index].Correct = checkedValue; }
                             <label class="form-check-label" for="flexCheckDefault">
                                 Answer correct?
                             </label>
                         </div>
-                        <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.RemoveAt(index ); }" class="btn btn-primary">remove</button>
+                        <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.RemoveAt(index); }" class="btn btn-primary">remove</button>
                     </div>
                 </div>
             }
