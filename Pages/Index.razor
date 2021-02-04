@@ -48,36 +48,39 @@ Welcome to the questionaire builder.
 {
     @foreach (Question tmp in newQuestionaire.questions)
     {
-        <form>
-            <h1> @tmp.questionText</h1>
-            <div class="form-group">
-                <b><label for="exampleFormControlInput1">Answer</label></b>
-                <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your answer here" value="@stringAnswer" @oninput="(EventArgs) => { SetAnswer(EventArgs.Value.ToString()); }">
-                <small id="answerHelp" class="form-text text-muted">Enter your answer here:)</small>
-                <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.Add(new Answers(stringAnswer)); }" class="btn btn-primary">Add</button>
-            </div>
-            @code
+        
+<form>
+    <h1> @tmp.questionText</h1>
+    <div class="form-group">
+        <b><label for="exampleFormControlInput1">Answer</label></b>
+        <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your answer here" value="@stringAnswer" @oninput="(EventArgs) => { SetAnswer(EventArgs.Value.ToString()); }">
+        <small id="answerHelp" class="form-text text-muted">Enter your answer here:)</small>
+        <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.Add(new Answers(stringAnswer,false)); }" class="btn btn-primary">Add</button>
+    </div>
+    @code
             {
-                string stringAnswer = " ";
+string stringAnswer = " ";
 
-                private void SetAnswer(string Value)
-                {
-                    stringAnswer = Value;
+private void SetAnswer(string Value)
+{
+            stringAnswer = Value;
+}
+        
+    }
+
+    @foreach (Answers tmpAns in tmp.questionAnswer)
+    {
+    <div class="card w-75">
+        
+            @{  var ansTxt = tmpAns;
+                int index = tmp.questionAnswer.IndexOf(ansTxt);}
+        <div class="card-body">
+            <p class="card-text">@tmpAns.AnswerText</p>
+            <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.RemoveAt(index ); }" class="btn btn-primary">remove</button>
+        </div>
+    </div>
                 }
-            }
-
-            @foreach(Answers tmpAns in tmp.questionAnswer)
-            {
-                <h5> </h5>
-                <div class="card w-75">
-                    <div class="card-body">
-                       
-                        <p class="card-text"></p>
-                        <a href="#" class="btn btn-primary">remove</a>
-                    </div>
-                </div>
-            }
-        </form>
+</form>
 
     }
 }

@@ -4,7 +4,7 @@ namespace CreateQuestionaireAppBlazor
 {
     public class Question
     {
-        public string questionText;
+        public string questionText { get; set; }
 
         public List<Answers> questionAnswer { get; set; }
 
