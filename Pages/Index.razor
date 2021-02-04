@@ -80,6 +80,7 @@ Welcome to the questionaire builder.
             }
             else
             {
+
             }
         }
     }
@@ -156,21 +157,22 @@ Welcome to the questionaire builder.
             @foreach (Answers tmpAns in tmp.questionAnswer)
             {
                 <div class="card w-75">
-
-                    @{ var ansTxt = tmpAns;
+                    @{  var ansTxt = tmpAns;
                         int index = tmp.questionAnswer.IndexOf(ansTxt);
-                        bool checkedValue = false;
                      }
 
                     <div class="card-body">
                         <p class="card-text">@tmpAns.AnswerText</p>
                         <div class="form-check">
-                            <input class="form-check-input" @bind="checkedValue" type="checkbox" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" id="flexCheckDefault" @bind="@tmpAns.Correct" />
+                            @code{ bool checkedValue = false; }
                             @{ tmp.questionAnswer[index].Correct = checkedValue; }
+
                             <label class="form-check-label" for="flexCheckDefault">
                                 Answer correct?
                             </label>
                         </div>
+
                         <button type="button" @onclick="(EventArgs) => { tmp.questionAnswer.RemoveAt(index); }" class="btn btn-primary">remove</button>
                     </div>
                 </div>
