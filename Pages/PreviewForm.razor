@@ -1,8 +1,75 @@
 ﻿@page "/PreviewForm"
-@inject HttpClient Http
 
-<h3>PreviewForm</h3>
+@{ Questionaire newQuestionaire = new Questionaire();
 
-@code {
+    newQuestionaire.questionaireName = "greg";
+    Answers answer1 = new Answers("afaasfs");
+    Answers answer2 = new Answers("dsasdaa");
+    Answers answer3 = new Answers("asfasfd");
+    Answers answer4 = new Answers("gsdfafs");
+    Answers answer5 = new Answers("agszaag");
+    Answers answer6 = new Answers("ahasadf");
+
+    Question newQuestion = new Question("What is life?");
+    Question newQuestion2 = new Question("What is love?");
+    Question newQuestion3 = new Question("What is asd?");
+    Question newQuestion4 = new Question("What is the point");
+
+    newQuestion.questionAnswer.Add(answer1);
+    newQuestion2.questionAnswer.Add(answer2);
+    newQuestion2.questionAnswer.Add(answer3);
+    newQuestion3.questionAnswer.Add(answer4);
+    newQuestion3.questionAnswer.Add(answer5);
+    newQuestion3.questionAnswer.Add(answer6);
+
+    newQuestion4.questionAnswer.Add(answer3);
+
+    newQuestionaire.questions.Add(newQuestion);
+    newQuestionaire.questions.Add(newQuestion2);
+    newQuestionaire.questions.Add(newQuestion3);
+    newQuestionaire.questions.Add(newQuestion4);
 
 }
+
+<h1>Questionaire name :@newQuestionaire.questionaireName</h1>
+
+@foreach (Question tmpQues in newQuestionaire.questions)
+{
+    <form>
+        <div class="form-group">
+            <h3> @tmpQues.questionText</h3>
+
+
+            @if (tmpQues.questionAnswer.Count() >= 2)
+            {
+                <small id="answerHelp" class="form-text text-muted">Select your answer here:</small>
+                foreach (Answers tmpAns in tmpQues.questionAnswer)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+                        <label class="form-check-label" for="flexCheckChecked">@tmpAns.AnswerText.ToString() </label>
+                    </div>
+                }
+            }
+            else
+            {
+                <small id="answerHelp" class="form-text text-muted">Enter your answer here:</small>
+                <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Enter your answer here">
+
+            }
+
+        </div>
+
+
+</form>
+
+
+        }
+
+
+        @functions {
+            public void checkAnswer()
+            {
+
+            }
+        }
